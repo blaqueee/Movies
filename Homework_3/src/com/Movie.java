@@ -1,16 +1,11 @@
 package com;
 
-public class Movie implements Comparable<Movie> {
+public class Movie {
     private String name;
     private int year;
     private String description;
     private Director director;
     private Cast[] cast;
-
-    @Override
-    public int compareTo(Movie o) {
-        return this.name.compareTo(o.getName());
-    }
 
 
     public String getName() {
@@ -39,6 +34,10 @@ public class Movie implements Comparable<Movie> {
 
     public Director getDirector() {
         return director;
+    }
+
+    public String getDirectorName(){
+        return director.getFullName();
     }
 
     public void setDirector(Director director) {

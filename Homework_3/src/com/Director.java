@@ -1,6 +1,6 @@
 package com;
 
-public class Director {
+public class Director implements Comparable<Movie>{
     private String fullName;
 
     public String getFullName() {
@@ -9,5 +9,10 @@ public class Director {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    @Override
+    public int compareTo(Movie o) {
+        return this.fullName.compareTo(o.getDirector().getFullName());
     }
 }
