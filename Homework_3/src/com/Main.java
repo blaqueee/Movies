@@ -18,12 +18,12 @@ public class Main {
         while (true) {
             switch (askAction()) {
                 case 1:
-                    print(catalog);
+                    catalog.printMovie(catalog.getMovies());
                     break;
                 case 2:
                     ArrayList<Movie> movies = catalog.searchFilm();
                     if (movies != null)
-                        catalog.printFilm(movies);
+                        catalog.printMovie(movies);
                     else
                         System.out.println("Can't find movies with this name!");
                     break;
@@ -31,7 +31,6 @@ public class Main {
                     catalog.sort(catalog.askOrderCriterion());
                     break;
             }
-            return catalog;
         }
     }
 
