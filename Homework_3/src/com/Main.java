@@ -9,7 +9,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
 
-        Catalog catalog = Reader.readFile();
+        Catalog catalog = null;
 
         catalog = doAction(catalog);
     }
@@ -17,18 +17,72 @@ public class Main {
     private static Catalog doAction(Catalog catalog){
         while (true) {
             switch (askAction()) {
+                case 0:
+                    catalog = Reader.readFile();
+                    break;
                 case 1:
-                    catalog.printMovie(catalog.getMovies());
+                    if (catalog != null)
+                        catalog.printMovie(catalog.getMovies());
+                    else
+                        System.out.println("Read JSON File!!!");
                     break;
                 case 2:
-                    ArrayList<Movie> movies = catalog.searchFilm();
-                    if (movies != null)
-                        catalog.printMovie(movies);
-                    else
-                        System.out.println("Can't find movies with this name!");
+                    if (catalog != null) {
+                        ArrayList<Movie> movies = catalog.searchFilm();
+                        if (movies != null)
+                            catalog.printMovie(movies);
+                        else
+                            System.out.println("Can't find movies with this name!");
+                    } else
+                        System.out.println("Read JSON File!!!");
                     break;
                 case 3:
-                    catalog.sort(catalog.askOrderCriterion());
+                    if (catalog != null)
+                        catalog.sort(catalog.askOrderCriterion());
+                    else
+                        System.out.println("Read JSON File!!!");
+                    break;
+                case 4:
+                    if (catalog != null) {
+                        ArrayList<Movie> movies = catalog.searchByCastName();
+                        if (movies != null)
+                            catalog.printMovie(movies);
+                        else
+                            System.out.println("Can't find films of this cast!");
+                    } else
+                        System.out.println("Read JSON File!!!");
+                    break;
+                case 5:
+                    if (catalog != null) {
+                        ArrayList<Movie> movies = catalog.searchByDirectorName();
+                        if (movies != null)
+                            catalog.printMovie(movies);
+                        else
+                            System.out.println("Can't find films of this director!");
+                    } else
+                        System.out.println("Read JSON File!!!");
+                    break;
+                case 6:
+                    if (catalog != null) {
+                        ArrayList<Movie> movies = catalog.searchByYear();
+                        if (movies != null)
+                            catalog.printMovie(movies);
+                        else
+                            System.out.println("Can't find films of this year!");
+                    } else
+                        System.out.println("Read JSON File!!");
+                    break;
+                case 7:
+                    if (catalog != null)
+                        catalog.searchByCastNameAndPrintRoles();
+                    else
+                        System.out.println("Read JSON File!!!");
+                    break;
+                case 8:
+                    if (catalog != null)
+                        catalog.printMoviesWithCastsAndRoles(catalog.getMovies());
+                    else
+                        System.out.println("Read JSON File!!!");
                     break;
             }
         }
@@ -52,31 +106,22 @@ public class Main {
         if (str.equals(""))
             throw new EmptyChoiceException("Choice can't be empty!");
         int choice = Integer.parseInt(str);
-        if (choice < 1 || choice > 3)
+        if (choice < 0 || choice > 8)
             throw new ChoiceNotFoundException("Incorrect choice!");
         return choice;
     }
     private static void printActions(){
         System.out.println("""
                 Actions:
+                0 -> Read JSON file
                 1 -> Print all movies
                 2 -> Find movies by name
-                3 -> Sort movies""");
-    }
-
-    private static void print(Catalog catalog){
-        for (Movie movie : catalog.getMovies()){
-            System.out.println("Name: " + movie.getName());
-            System.out.println("Year: " + movie.getYear());
-            System.out.println("Description: " + movie.getDescription());
-            System.out.println("Director: ");
-            System.out.println("   Full name: " + movie.getDirector().getFullName());
-            System.out.println("Cast: ");
-            for (Cast cast : movie.getCast()){
-                System.out.println("    Full name: " + cast.getFullName());
-                System.out.println("    Role: " + cast.getRole());
-            }
-            System.out.println();
-        }
+                3 -> Sort movies
+                4 -> Search movies by cast's full name
+                5 -> Search movies by director's full name
+                6 -> Search movies by year
+                7 -> Search movies by cast's full name and print roles
+                8 -> Print all casts and their roles
+                """);
     }
 }
